@@ -11,6 +11,14 @@ pygame.display.flip()
 red=(255,0,0)
 green=(0,255,0)
 blue=(0,0,255)
+pygame.display.set_caption('Scan-Converting Line ')
+clock = pygame.time.Clock()
+black = (0,0,0)
+white = (255,255,255)
+red = (255,0,0)
+A=[200,200]
+c=0
+mx,my=1,1
 def ROUND(n):
     return int(n+0.5)
 
@@ -138,28 +146,6 @@ def dda(x1, y1, x2, y2):
     pygame.display.flip()
 
 
-def name():
-    pygame.init()
-    screen = pygame.display.set_mode((400, 400))
-    name = ""
-    font = pygame.font.Font(None, 10)
-    while True:
-        for evt in pygame.event.get():
-            if evt.type == KEYDOWN:
-                if evt.unicode.isalpha():
-                    name += evt.unicode
-                elif evt.key == K_BACKSPACE:
-                    name = name[:-1]
-                elif evt.key == K_RETURN:
-                    name = ""
-            elif evt.type == QUIT:
-                return
-        screen.fill((255, 255, 255))
-        block = font.render(name, True, (255, 0, 0))
-        rect = block.get_rect()
-        rect.center = screen.get_rect().center
-        screen.blit(block, rect)
-        pygame.display.flip()
 
 
 def directLine(x1,y1,x2,y2):
@@ -189,40 +175,47 @@ def directLine(x1,y1,x2,y2):
     pygame.display.flip()
 
 
-pygame.display.set_caption('Scan-Converting Line ')
-clock = pygame.time.Clock()
-black = (0,0,0)
-white = (255,255,255)
-red = (255,0,0)
-A=[200,200]
-c=0
-mx,my=1,1
-while True:
-    for e in pygame.event.get():
-        if e.type==pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-        if e.type == pygame.MOUSEMOTION:
-
-            mx, my = pygame.mouse.get_pos()
-
-            mx_str = 'pixel value = ( '+str(mx)+" , "+str(my)+" )"
-            pygame.display.set_caption(mx_str)
-            screen.fill((255, 255, 255))
-            directLine(A[0], A[1], mx, my)
-            dda(A[0], A[1], mx, my)
-            bresenham(A[0],A[1],mx,my)
-            mx_str = 'Line for Pixel  = ( ' + str(A[0]) + " , " + str(A[1]) + " ) and ("+str(mx)+" , "+str(my)+" )"
-            pygame.display.get_caption()
-            pygame.display.set_caption(mx_str)
-            pygame.display.get_caption()
-        if e.type == pygame.MOUSEBUTTONDOWN:
-                A[0]=mx
-                A[1]=my
-
-    time.sleep(0.03)
-    pygame.display.update()
 
 
+
+def input(x):
+    while True:
+        for e in pygame.event.get():
+            if e.type==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if e.type == pygame.MOUSEMOTION:
+
+                mx, my = pygame.mouse.get_pos()
+
+                mx_str = 'pixel value = ( '+str(mx)+" , "+str(my)+" )"
+                pygame.display.set_caption(mx_str)
+                screen.fill((255, 255, 255))
+                if x =='directline':
+                    directLine(A[0], A[1], mx, my)
+                if x == 'dda':
+                    dda(A[0], A[1], mx, my)
+                if x == 'bresenham':
+                    bresenham(A[0],A[1],mx,my)
+                elif x == 'all':
+                    directLine(A[0], A[1], mx, my)
+                    dda(A[0], A[1], mx, my)
+                    bresenham(A[0], A[1], mx, my)
+                mx_str = 'Line for Pixel  = ( ' + str(A[0]) + " , " + str(A[1]) + " ) and ("+str(mx)+" , "+str(my)+" )"
+                pygame.display.get_caption()
+                pygame.display.set_caption(mx_str)
+                pygame.display.get_caption()
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                    A[0]=mx
+                    A[1]=my
+
+        time.sleep(0.03)
+        pygame.display.update()
+
+
+#input('directline')
+#input('dda')
+#input('bresenham')
+input('all')
 
